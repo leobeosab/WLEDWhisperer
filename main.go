@@ -6,6 +6,7 @@ import (
 	"net"
 )
 
+// Turns led 3 & 6 purple
 func CreatePacket(index int, red int, green int, blue int) []byte {
 	return []byte{1, 1, 3, 255, 0, 255, 6, 255, 0, 255}
 }
