@@ -27,3 +27,17 @@ func CreatePacket(timeout byte, leds []LED) []byte {
 
 	return data
 }
+
+func SetStripLEDs(l int, r byte, g byte, b byte) []LED {
+	leds := make([]LED, l)
+	for i := 0; i < l; i++ {
+		leds[i] = LED{
+			Index: byte(i),
+			Red:   r,
+			Green: g,
+			Blue:  b,
+		}
+	}
+
+	return leds
+}

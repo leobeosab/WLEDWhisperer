@@ -12,7 +12,7 @@ func main() {
 
 	wled.CreateConnection(s)
 
-	leds := []wled.LED{wled.LED{Index: 5, Red: 255, Green: 255, Blue: 255}}
+	leds := wled.SetStripLEDs(s.LedCount, 255, 255, 255)
 
 	s.Connection.Write(wled.CreatePacket(5, leds))
 }
