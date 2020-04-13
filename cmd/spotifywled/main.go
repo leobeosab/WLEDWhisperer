@@ -31,7 +31,7 @@ func main() {
 // Ran when auth succeeds
 func ProgressLoop(client *sapi.Client) {
 	for {
-		time.Sleep(1 * time.Second)
+		time.Sleep(200 * time.Millisecond)
 		p, err := client.PlayerCurrentlyPlaying()
 		if err != nil {
 			log.Println(err)
@@ -41,7 +41,7 @@ func ProgressLoop(client *sapi.Client) {
 		prog := float32(p.Progress) / float32(p.Item.Duration)
 
 		// progess (.xx) * number of leds should light up the correct percentage of leds :)
-		data := wled.SetStripLEDs(int(prog*float32(s.LedCount)), 50, 255, 80)
-		s.Connection.Write(wled.CreatePacketWithBrightness(5, data, 0.10))
+		data := wled.SetPercentageLEDs(prog, s.LedCount, 125, 255, 125)
+		s.Connection.Write(wled.CreatePacketWithBrightness(5, data, 1.0))
 	}
 }
