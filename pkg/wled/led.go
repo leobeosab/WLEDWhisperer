@@ -9,8 +9,16 @@ type LED struct {
 	Blue  byte
 }
 
-// Create packet according to WARLS format
 func CreatePacket(timeout byte, leds []LED) []byte {
+	return CreatePacketWithBrightness(timeout, leds, 1)
+}
+
+// Create packet according to WARLS format
+func CreatePacketWithBrightness(timeout byte, leds []LED, b float32) []byte {
+	if b > 1.0 {
+		b = 1.0
+	}
+
 	data := make([]byte, 2)
 
 	// Protocol
@@ -20,12 +28,21 @@ func CreatePacket(timeout byte, leds []LED) []byte {
 
 	// LED bytes are index,r,g,b.. reapeat until end
 	for _, l := range leds {
-		data = append(data, l.Index, l.Red, l.Green, l.Blue)
+		data = append(data, l.Index)
+		data = append(data, DimLEDs(l.Red, l.Green, l.Blue, b)...)
 	}
 
 	log.Println(data)
 
 	return data
+}
+
+func DimLEDs(r byte, g byte, b byte, bright float32) []byte {
+	r = byte(float32(r) * bright)
+	g = byte(float32(g) * bright)
+	b = byte(float32(b) * bright)
+
+	return []byte{r, g, b}
 }
 
 func SetStripLEDs(l int, r byte, g byte, b byte) []LED {

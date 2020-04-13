@@ -42,6 +42,6 @@ func ProgressLoop(client *sapi.Client) {
 
 		// progess (.xx) * number of leds should light up the correct percentage of leds :)
 		data := wled.SetStripLEDs(int(prog*float32(s.LedCount)), 50, 255, 80)
-		s.Connection.Write(wled.CreatePacket(5, data))
+		s.Connection.Write(wled.CreatePacketWithBrightness(5, data, 0.10))
 	}
 }
