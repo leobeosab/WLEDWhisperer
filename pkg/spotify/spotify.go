@@ -16,7 +16,7 @@ var (
 	state = ""
 )
 
-func SetupClient() {
+func SetupClient(loop func(*spotify.Client)) {
 	var client *spotify.Client
 
 	http.HandleFunc("/callback", CompleteAuth)
@@ -33,6 +33,7 @@ func SetupClient() {
 		}
 
 		log.Println("You are logged in as: ", user.ID)
+		loop(client)
 	}()
 
 	http.ListenAndServe(":8888", nil)
