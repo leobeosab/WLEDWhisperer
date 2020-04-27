@@ -12,6 +12,7 @@ Go communication with WLED plus various examples and integrations, just for fun
 
 ### Forza
 [Youtube Video](https://youtu.be/UF4cU1qSNPA)
+
 ![WLEDWhisperer%20Readme/51DB74C0-9F97-4141-A57D-91AE59E54EE4.gif](Readme/51DB74C0-9F97-4141-A57D-91AE59E54EE4.gif)
 
 ### Spotify
