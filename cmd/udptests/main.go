@@ -5,7 +5,7 @@ import "github.com/leobeosab/wledwhisperer/pkg/wled"
 func main() {
 	s := &wled.Settings{
 		Address:     "192.168.1.19",
-		FromAddress: "192.168.1.112",
+		FromAddress: "192.168.1.15",
 		Port:        ":21324",
 		LedCount:    11,
 	}
