@@ -60,10 +60,11 @@ func main() {
 		//fmt.Println(hex.EncodeToString(buff[0:24]))
 
 		prog := CurrentRPM / EngineMaxRPM
+		prog += 0.1
 
 		// Run 10 times a second
 		if time.Since(oldTime) > time.Duration(100*time.Millisecond) {
-			data := wled.SetStripLEDs(s.LedCount, byte(prog*255), byte((1.0-prog)*255), 0)
+			data := wled.SetPercentageLEDs(prog, s.LedCount, byte(prog*255), byte((1.0-prog)*255), 0)
 			packet := wled.CreatePacketWithBrightness(255, data, 1.0)
 			s.Connection.Write(packet)
 			fmt.Println(prog)
