@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/binary"
+	"flag"
 	"fmt"
 	"log"
 	"math"
@@ -14,17 +15,32 @@ import (
 func main() {
 	fmt.Println("Forza Telemetry Server")
 
+	var hostIp string
+	var wledIp string
+	var ledCount int
+
+	// This is passed as a flag because I don't know what interface to grab the IP from
+	flag.StringVar(&hostIp, "host-ip", "", "IP address of this machine")
+	flag.StringVar(&wledIp, "wled-ip", "", "IP address of the WLED strip")
+	flag.IntVar(&ledCount, "led-coount", 0, "Number of leds in the light strip")
+
+	flag.Parse()
+
+	if hostIp == "" || wledIp == "" || ledCount <= 0 {
+		panic("You need to pass --led-count, --host-ip, and --wled-ip")
+	}
+
 	// Temporary
 	s := &wled.Settings{
-		Address:     "192.168.1.19",
-		FromAddress: "192.168.1.15",
+		Address:     wledIp,
+		FromAddress: hostIp,
 		Port:        ":21324",
-		LedCount:    10,
+		LedCount:    ledCount,
 	}
 	wled.CreateConnection(s)
 	defer s.Connection.Close()
 
-	port := "192.168.1.15:8080"
+	port := hostIp + ":8080"
 	protocol := "udp"
 
 	udpAddr, err := net.ResolveUDPAddr(protocol, port)
@@ -32,7 +48,7 @@ func main() {
 		panic(err)
 	}
 
-	log.Printf("Server starting at localhost%s, with protocol: %s", port, protocol)
+	log.Printf("Server starting at %s, with protocol: %s", port, protocol)
 
 	udpConn, err := net.ListenUDP(protocol, udpAddr)
 	if err != nil {
@@ -63,7 +79,7 @@ func main() {
 		prog += 0.1
 
 		// Run 10 times a second
-		if time.Since(oldTime) > time.Duration(100*time.Millisecond) {
+		if time.Since(oldTime) > time.Duration(20*time.Millisecond) {
 			data := wled.SetPercentageLEDs(prog, s.LedCount, byte(prog*255), byte((1.0-prog)*255), 0)
 			packet := wled.CreatePacketWithBrightness(255, data, 1.0)
 			s.Connection.Write(packet)
