@@ -22,7 +22,7 @@ func main() {
 	// This is passed as a flag because I don't know what interface to grab the IP from
 	flag.StringVar(&hostIp, "host-ip", "", "IP address of this machine")
 	flag.StringVar(&wledIp, "wled-ip", "", "IP address of the WLED strip")
-	flag.IntVar(&ledCount, "led-coount", 0, "Number of leds in the light strip")
+	flag.IntVar(&ledCount, "led-count", 0, "Number of leds in the light strip")
 
 	flag.Parse()
 
